@@ -2,11 +2,13 @@ package sample;
 
 import javafx.scene.input.KeyCode;
 
+import java.security.Key;
+
 /**
  * This class contains the location of the image in the directory, and the positions of the image on the scene
  * and the image size. It also contains the scene width and height.
  * @author Charlie Cox
- * @version
+ * @version 20/08/2018
  */
 public class DogPlayer {
     private String location = "/Dog.jpg";
@@ -14,6 +16,7 @@ public class DogPlayer {
     private int yPos;
     private int sceneWidth;
     private int sceneHeight;
+    boolean up, down, left, right, sprint;
     private static final int PICTURESIZE = 30;
 
 
@@ -63,7 +66,7 @@ public class DogPlayer {
     }
 
     /**
-     * Updates the position points of the player.
+     * Updates the appropriate boolean variable to true accordingly.
      * @param code The key that has been pressed by the user
      */
     public void move(KeyCode code) {
@@ -101,17 +104,143 @@ public class DogPlayer {
                 moveRight();
                 break;
             }
+            case SHIFT: {
+                moveSprint();
+                break;
+            }
         }
+    }
+
+    /**
+     * Updates the appropriate boolean variable to false accordingly.
+     * @param code The key that has been pressed by the user
+     */
+    public void stopMove(KeyCode code) {
+        System.out.println(code + " release");
+        switch (code) {
+            case UP: {
+                stopUp();
+                break;
+            }
+            case W: {
+                stopUp();
+                break;
+            }
+            case DOWN: {
+                stopDown();
+                break;
+            }
+            case S: {
+                stopDown();
+                break;
+            }
+            case LEFT: {
+                stopLeft();
+                break;
+            }
+            case A: {
+                stopLeft();
+                break;
+            }
+            case RIGHT: {
+                stopRight();
+                break;
+            }
+            case D: {
+                stopRight();
+                break;
+            }
+            case SHIFT: {
+                stopSprint();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Updates the up variable to true
+     */
+    private void moveUp() {
+        this.up = true;
+    }
+
+    /**
+     * Updates the down variable to true
+     */
+    private void moveDown() {
+        this.down = true;
+    }
+
+    /**
+     * Updates the left variable to true
+     */
+    private void moveLeft() {
+        this.left = true;
+    }
+
+    /**
+     * Updates the right variable to true
+     */
+    private void moveRight() {
+        this.right = true;
+    }
+
+    /**
+     * Updates the sprint variable to true
+     */
+    private void moveSprint() {
+        this.sprint = true;
+    }
+
+    /**
+     * Updates the up variable to false
+     */
+    private void stopUp() {
+        this.up = false;
+    }
+
+    /**
+     * Updates the down variable to false
+     */
+    private void stopDown() {
+        this.down = false;
+    }
+
+    /**
+     * Updates the left variable to false
+     */
+    private void stopLeft() {
+        this.left = false;
+    }
+
+    /**
+     * Updates the right variable to false
+     */
+    private void stopRight() {
+        this.right = false;
+    }
+
+    /**
+     * Updates the sprint variable to false
+     */
+    private void stopSprint() {
+        this.sprint = false;
     }
 
     /**
      * Updates the y position so the player moves up the screen but does not leave the screen.
      */
-    private void moveUp() {
-        if (this.yPos-1<0) {
+    public void updateUp() {
+        int speed = 1;
+        if(sprint) {
+            speed++;
+        }
+
+        //checks whether it is at the end of the screen or not
+        if (this.yPos - speed < 0) {
             return;
         } else {
-            this.yPos--;
+            this.yPos-=speed;
             System.out.println(yPos);
         }
     }
@@ -119,11 +248,16 @@ public class DogPlayer {
     /**
      * Updates the y position so the player moves down the screen but does not leave the screen.
      */
-    private void moveDown() {
-        if (this.yPos+1+PICTURESIZE>this.sceneHeight) {
+    public void updateDown() {
+        int speed = 1;
+        if(sprint) {
+            speed++;
+        }
+
+        if (this.yPos + speed + PICTURESIZE > this.sceneHeight) {
             return;
         } else {
-            this.yPos++;
+            this.yPos+=speed;
             System.out.println(yPos);
         }
     }
@@ -131,11 +265,16 @@ public class DogPlayer {
     /**
      * Updates the x position so the player moves left along the screen but does not leave the screen.
      */
-    private void moveLeft() {
-        if(this.xPos-1<0) {
+    public void updateLeft() {
+        int speed = 1;
+        if(sprint) {
+            speed++;
+        }
+
+        if(this.xPos-speed<0) {
             return;
         } else {
-            this.xPos--;
+            this.xPos-=speed;
             System.out.println(xPos);
         }
     }
@@ -143,11 +282,16 @@ public class DogPlayer {
     /**
      * Updates the x position so the player moves right along the screen but does not leave the screen.
      */
-    private void moveRight() {
-        if(this.xPos+1+PICTURESIZE>this.sceneWidth) {
+    public void updateRight() {
+        int speed = 1;
+        if(sprint) {
+            speed++;
+        }
+
+        if(this.xPos+speed+PICTURESIZE>this.sceneWidth) {
             return;
         } else {
-            this.xPos++;
+            this.xPos+=speed;
             System.out.println(xPos);
         }
     }

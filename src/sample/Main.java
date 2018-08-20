@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -11,7 +12,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
- * This class moves the image as per user key presses.
+ * This class moves the image as per user key presses. To move the sprite, use WASD or arrow keys.
+ * To sprint (move faster) hold the shift key, and release to stop sprinting.
+ * @author Charlie Cox
+ * @version 20/08/2018
  */
 public class Main extends Application {
     private int width=500;//width and height of the scene
@@ -26,7 +30,7 @@ public class Main extends Application {
      * @throws Exception
      */
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         //creating the player object
         dog = new DogPlayer(width, height);
 
@@ -47,8 +51,7 @@ public class Main extends Application {
         //putting everything onto the scene
         Scene scene = new Scene(playArea, width, height, Color.GREEN);
 
-        //defining button actions
-        scene.setOnMouseClicked(e -> System.out.println("mouse click"));
+        //defining button actions when pressed and released
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -57,9 +60,39 @@ public class Main extends Application {
             }
         });
 
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                dog.stopMove(event.getCode());
+                drawPlayer();
+            }
+        });
+
+        //displaying the stage
         primaryStage.setTitle("Movement Test using Scene");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        //timer
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (dog.up)
+                    dog.updateUp();
+
+                if (dog.down)
+                    dog.updateDown();
+
+                if (dog.left)
+                    dog.updateLeft();
+
+                if (dog.right)
+                    dog.updateRight();
+
+                drawPlayer();
+            }
+        };
+        timer.start();
     }
 
     /**
