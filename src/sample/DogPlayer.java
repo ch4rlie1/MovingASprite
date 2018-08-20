@@ -2,6 +2,12 @@ package sample;
 
 import javafx.scene.input.KeyCode;
 
+/**
+ * This class contains the location of the image in the directory, and the positions of the image on the scene
+ * and the image size. It also contains the scene width and height.
+ * @author Charlie Cox
+ * @version
+ */
 public class DogPlayer {
     private String location = "/Dog.jpg";
     private int xPos;
@@ -11,6 +17,11 @@ public class DogPlayer {
     private static final int PICTURESIZE = 30;
 
 
+    /**
+     * Constructor
+     * @param sceneWidth width of the scene
+     * @param sceneHeight height of the scene
+     */
     public DogPlayer(int sceneWidth, int sceneHeight) {
         this.sceneWidth = sceneWidth;
         this.sceneHeight = sceneHeight;
@@ -19,18 +30,34 @@ public class DogPlayer {
         this.yPos = (sceneHeight/2)-(PICTURESIZE /2);
     }
 
+    /**
+     * Getter for position of the x (top left of image)
+     * @return xPos
+     */
     public int getxPos() {
         return xPos;
     }
 
+    /**
+     * Getter for position of the y (top left of image)
+     * @return yPos
+     */
     public int getyPos() {
         return yPos;
     }
 
+    /**
+     * Getter for the location of the image to be displayed.
+     * @return location
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Getter for the size of the player/image
+     * @return PICTURESIZE
+     */
     public static int getPICTURESIZE() {
         return PICTURESIZE;
     }
